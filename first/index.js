@@ -1,33 +1,35 @@
 const express= require('express');
 const app=express();
 const cors = require('cors');
+require('dotenv').config()
 const {MongoClient,ServerApiVersion}=require('mongodb')
 const port=process.env.PORT || 5000;
+
 //middleware
 app.use(cors());
 
-const users = [
-    {id: 0, name: "Efte", phone: "+880-1538597500", gmail: "efte460@yahoo.com"},
-    {id: 1, name: "Alex", phone: "+880-1521270086", gmail: "alex858@yahoo.com"},
-    {id: 2, name: "Sam", phone: "+880-1220946733", gmail: "sam742@yahoo.com"},
-    {id: 3, name: "Chris", phone: "+880-1114928217", gmail: "chris796@hotmail.com"},
-    {id: 4, name: "Jordan", phone: "+880-1863860312", gmail: "jordan592@hotmail.com"},
-    {id: 5, name: "Taylor", phone: "+880-1872033914", gmail: "taylor499@yahoo.com"},
-    {id: 6, name: "Jamie", phone: "+880-1411900385", gmail: "jamie81@gmail.com"},
-    {id: 7, name: "Morgan", phone: "+880-1665806318", gmail: "morgan498@yahoo.com"},
-    {id: 8, name: "Riley", phone: "+880-1567179682", gmail: "riley833@hotmail.com"},
-    {id: 9, name: "Cameron", phone: "+880-1790514316", gmail: "cameron458@hotmail.com"},
-    {id: 10, name: "Parker", phone: "+880-1199032712", gmail: "parker385@gmail.com"},
-    {id: 11, name: "Casey", phone: "+880-1712833339", gmail: "casey205@hotmail.com"},
-    {id: 12, name: "Dakota", phone: "+880-1958641655", gmail: "dakota223@gmail.com"},
-    {id: 13, name: "Kendall", phone: "+880-1437946757", gmail: "kendall500@yahoo.com"},
-    {id: 14, name: "Skyler", phone: "+880-1901981353", gmail: "skyler699@hotmail.com"},
-    {id: 15, name: "Reese", phone: "+880-1861108656", gmail: "reese809@gmail.com"},
-    {id: 16, name: "Rowan", phone: "+880-1183392713", gmail: "rowan545@yahoo.com"},
-    {id: 17, name: "Harper", phone: "+880-1816786987", gmail: "harper561@gmail.com"},
-    {id: 18, name: "Avery", phone: "+880-1217553375", gmail: "avery5@gmail.com"},
-    {id: 19, name: "Blake", phone: "+880-1353590129", gmail: "blake381@yahoo.com"}
-];
+// const users = [
+//     {id: 0, name: "Efte", phone: "+880-1538597500", gmail: "efte460@yahoo.com"},
+//     {id: 1, name: "Alex", phone: "+880-1521270086", gmail: "alex858@yahoo.com"},
+//     {id: 2, name: "Sam", phone: "+880-1220946733", gmail: "sam742@yahoo.com"},
+//     {id: 3, name: "Chris", phone: "+880-1114928217", gmail: "chris796@hotmail.com"},
+//     {id: 4, name: "Jordan", phone: "+880-1863860312", gmail: "jordan592@hotmail.com"},
+//     {id: 5, name: "Taylor", phone: "+880-1872033914", gmail: "taylor499@yahoo.com"},
+//     {id: 6, name: "Jamie", phone: "+880-1411900385", gmail: "jamie81@gmail.com"},
+//     {id: 7, name: "Morgan", phone: "+880-1665806318", gmail: "morgan498@yahoo.com"},
+//     {id: 8, name: "Riley", phone: "+880-1567179682", gmail: "riley833@hotmail.com"},
+//     {id: 9, name: "Cameron", phone: "+880-1790514316", gmail: "cameron458@hotmail.com"},
+//     {id: 10, name: "Parker", phone: "+880-1199032712", gmail: "parker385@gmail.com"},
+//     {id: 11, name: "Casey", phone: "+880-1712833339", gmail: "casey205@hotmail.com"},
+//     {id: 12, name: "Dakota", phone: "+880-1958641655", gmail: "dakota223@gmail.com"},
+//     {id: 13, name: "Kendall", phone: "+880-1437946757", gmail: "kendall500@yahoo.com"},
+//     {id: 14, name: "Skyler", phone: "+880-1901981353", gmail: "skyler699@hotmail.com"},
+//     {id: 15, name: "Reese", phone: "+880-1861108656", gmail: "reese809@gmail.com"},
+//     {id: 16, name: "Rowan", phone: "+880-1183392713", gmail: "rowan545@yahoo.com"},
+//     {id: 17, name: "Harper", phone: "+880-1816786987", gmail: "harper561@gmail.com"},
+//     {id: 18, name: "Avery", phone: "+880-1217553375", gmail: "avery5@gmail.com"},
+//     {id: 19, name: "Blake", phone: "+880-1353590129", gmail: "blake381@yahoo.com"}
+// ];
 
 
 
@@ -67,7 +69,29 @@ async function run() {
   }
   // Run the function and handle any errors
   run().catch(console.dir);
-
+  async function xe() {
+    try {
+      // Get the database and collection on which to run the operation
+      const database = client.db("insertDB");
+      const foods = database.collection("foods");
+      // Create an array of documents to insert
+      const docs = [
+        { name: "cake tomato", healthy: false },
+        { name: "lettuce", healthy: true },
+        { name: "donut", healthy: false }
+      ];
+      // Prevent additional documents from being inserted if one fails
+      const options = { ordered: true };
+      // Execute insert operation
+      const result = await foods.insertMany(docs, options);
+     
+      // Print result
+      console.log(`${result.insertedCount} documents were inserted`);
+    } finally {
+      await client.close();
+    }
+  }
+  xe().catch(console.dir);
 
 app.get('/', (req, res) => {
     res.send('Hello, world');
